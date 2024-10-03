@@ -1,6 +1,6 @@
 ---
 title: "Lab 2: Exploring Rodents with `ggplot2`"
-author: "Your name here!"
+author: "Christopher Hawkins"
 format: html
 editor: source
 embed-resources: true
@@ -62,7 +62,11 @@ In the code chunk below, load in the packages necessary for your analysis. You s
 
 ```{r}
 #| label: setup
+#| echo: true
+#| eval: true
+#| message: false
 
+library(tidyverse)
 ```
 
 # Data Context
@@ -101,14 +105,30 @@ represent:
 
 ```{r}
 #| label: load-data
+#| echo: true
+#| eval: true
+#| message: false
 
+# 1
+surveys = read_csv("/Users/christopherhawkins/Documents/STAT 531/Week 2/lab-2-cjhawkins17/data/surveys.csv")
+
+# 2
+dim(surveys)
+
+# 3
+sapply(surveys, class)
 ```
 
 **2. What are the dimensions (# of rows and columns) of these data?**
 
+Number of rows = 30,463.
+Number of columns = 15.
+
 <!-- You can either write code here or in the code chunk for #1, but I **must** see the code you used to address this question!  -->
 
 **3. What are the data types of the variables in this dataset?**
+
+See output under respective code.
 
 <!-- You can either write code here or in the code chunk for #1, but I **must** see the code you used to address this question!  -->
 
@@ -138,6 +158,16 @@ the $x$-axis) and `hindfoot_length` (on the $y$-axis).**
 
 ```{r}
 #| label: scatterplot
+#| eval: true
+
+ggplot(data = surveys,
+       mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_point(alpha = 0.25) +
+  facet_wrap(~ species) +
+  labs(title = "Hindfoot length vs. weight of various rodent species",
+       subtitle = "Hindfoot Length [mm]",
+           x = "Weight [g]",
+           y = "")
 
 ```
 
@@ -168,7 +198,18 @@ It takes a larger cognitive load to read text that is rotated. It is common prac
 
 ```{r}
 #| label: boxplot
+#| eval: true
 
+ggplot(data = surveys,
+       mapping = aes(x = species,
+                     y = weight)) +
+  geom_jitter(alpha = 0.25, color = "steelblue") +
+  geom_boxplot(outliers = FALSE, alpha  = 0.00) +
+  labs(title = "Distribution of weight for different rodent species",
+       subtitle = "Weight [g]",
+           x = "Species",
+           y = "") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
 
@@ -215,6 +256,17 @@ Some people (and journals) prefer for boxplots to be stacked with a specific ori
 
 ```{r}
 #| label: rotated-boxplot
+#| eval: true
+
+ggplot(data = surveys,
+       mapping = aes(x = weight,
+                     y = species)) +
+  geom_jitter(alpha = 0.25, color = "steelblue") +
+  geom_boxplot(outliers = FALSE, alpha  = 0.00) +
+  labs(title = "Distribution of weight for different rodent species",
+       subtitle = "Species",
+           x = "Weight [g]",
+           y = "")
 
 ```
 
@@ -247,14 +299,16 @@ might want to look up the help documentation for `aov()`.
 
 ```{r}
 #| label: anova
+#| eval: true
 
-species_mod <- aov()
+species_mod <- aov(weight ~ factor(species), data = surveys)
 
 summary(species_mod)
 ```
 
 **18. Based on the results of the ANOVA F-test, draw a conclusion in context of the hypotheses. Make sure to cite appropriate output from above.**
 
+Assume a critical value of 0.05, the p-value from the ANOVA test is 2*10^-16 which is less than 0.05. Therefore, the difference in group means is statistically significant. Reject the null hypothesis and support the alternative.
 
 # Lab 2 Submission
 
