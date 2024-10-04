@@ -5,6 +5,7 @@ format: html
 editor: source
 embed-resources: true
 code-tools: true
+theme: minty
 ---
 
 # Part 1: GitHub Workflow
@@ -59,6 +60,9 @@ output, etc.).
 # Setup
 
 In the code chunk below, load in the packages necessary for your analysis. You should only need the `tidyverse` package for this analysis.
+
+The creation of this document referenced ChatGPT.
+https://chatgpt.com/share/66ff26ef-a700-8004-a7b3-8f7c8afcefc1
 
 ```{r}
 #| label: setup

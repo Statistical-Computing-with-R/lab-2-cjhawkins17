@@ -1,10 +1,11 @@
 ---
 title: "Challenge 2: Spicing things up with ggplot2"
-author: "Add your name!"
+author: "Christopher Hawkins"
 format: html
 editor: source
 embed-resources: true
 code-tools: true
+theme: minty
 ---
 
 For this week's Challenge, you will have three different options to explore.
@@ -23,6 +24,16 @@ you would like to include, feel free to toss those in the YAML, too!
 Next, create a setup code chunk to load the packages and read in the
 `surveys.csv` data file exactly how you did in Lab 2.
 
+```{r}
+#| label: setup
+#| eval: true  
+#| message: false
+
+library(tidyverse)
+
+surveys <- read_csv("/Users/christopherhawkins/Documents/STAT 531/Week 2/lab-2-cjhawkins17/data/surveys.csv")
+```
+
 Finally, create another code chunk and paste in your code from Question 14 or Question 15 in Lab 2 -- we will be modifying the box plot of weights by species!
 
 # Medium: Ridge Plots
@@ -36,6 +47,24 @@ for side-by-side density plots using `geom_density()`. Instead, we will need to
 make use of the `ggridges` package to create side-by-side density (ridge) plots.
 
 > **For this challenge you are to change your boxplots to ridge plots. You will need to install the `ggridges` package and explore the `geom_density_ridges()` function.**
+
+```{r}
+#| label: Medium Ridge Plots
+#| eval: true
+#| message: false
+#| warning: false
+
+library(ggridges)
+
+ggplot(data = surveys,
+       mapping = aes(x = weight,
+                     y = species)) +
+  geom_density_ridges(scale = 0.95, alpha = 0.75) +
+  labs(title = "Distribution of weight for different rodent species",
+       subtitle = "Species",
+           x = "Weight [g]",
+           y = "")
+```
 
 # Spicy: Exploring Color Themes
 
@@ -74,6 +103,7 @@ If you are interested in using specific hex colors, I like the [image color pick
 
 ```{r}
 #| include: false
+#| eval: true
 surveys |> 
   ggplot(aes(x = weight, y = species, color = genus)) +
   geom_boxplot() +
@@ -101,6 +131,22 @@ use (e.g. `scale_color_aaas()`).
 :::
 
 > **In this challenge you are expected to use this information to modify the boxplots you created Lab 2. First, you are to color the boxplots based on the variable `genus`. Next, you are to change the colors used for `genus` using either manual color specification or any of the packages listed here (or others!).**
+
+```{r}
+#| label: rotated-boxplot
+#| eval: true
+
+ggplot(data = surveys,
+       mapping = aes(x = weight,
+                     y = species)) +
+  geom_jitter(aes(color = genus), alpha = 0.60) +
+  geom_boxplot(outliers = FALSE, alpha  = 0.00) +
+  scale_color_manual(values = cdPalette_grey) + 
+  labs(title = "Distribution of weight for different rodent species",
+       subtitle = "Species",
+           x = "Weight [g]",
+           y = "")
+```
 
 # Hot: Exploring `ggplot2` Annotation
 
@@ -133,6 +179,37 @@ Note that I've labeled the "Sigmodon" and "Perognathus" genera, so the reader
 can tell that these boxplots are associated with their respective genus.
 
 > **In this challenge you are expected to use this information to modify the boxplots you created in Lab 2. First, you are to color the boxplots based on the variable `genus`. Next, you are to add annotations for each genus next to the boxplot(s) associated with that genus. Finally, you are expected to use the `theme()` function to remove the color legend from the plot, since it is no longer needed!**
+
+```{r}
+#| label: rotated-boxplot
+#| eval: true
+
+ggplot(data = surveys,
+       mapping = aes(x = weight,
+                     y = species)) +
+  geom_jitter(aes(color = genus), alpha = 0.60) +
+  geom_boxplot(outliers = FALSE, alpha  = 0.00) +
+  scale_color_manual(values = cdPalette_grey) + 
+  annotate("text", y = 1.3, x = 250, label = "Neotoma") +
+  annotate("text", y = 2.3, x = 250, label = "Chaetodipus") +
+  annotate("text", y = 3.3, x = 250, label = "Peromyscus") +
+  annotate("text", y = 4.3, x = 250, label = "Perognathus") +
+  annotate("text", y = 5.3, x = 250, label = "Reithrodontomys") +
+  annotate("text", y = 6.3, x = 250, label = "Sigmodon") +
+  annotate("text", y = 7.3, x = 250, label = "Onychomys") +
+  annotate("text", y = 8.3, x = 250, label = "Peromyscus") +
+  annotate("text", y = 9.3, x = 250, label = "Reithrodontomys") +
+  annotate("text", y = 10.3, x = 250, label = "Dipodomys") +
+  annotate("text", y = 11.3, x = 250, label = "Dipodomys") +
+  annotate("text", y = 12.3, x = 250, label = "Chaetodipus") +
+  annotate("text", y = 13.3, x = 250, label = "Dipodomys") +
+  annotate("text", y = 14.3, x = 250, label = "Onychomys") +
+  theme(legend.position = "none") +
+  labs(title = "Distribution of weight for different rodent species",
+       subtitle = "Species",
+           x = "Weight [g]",
+           y = "")
+```
 
 # Challenge 2 Submission
 
